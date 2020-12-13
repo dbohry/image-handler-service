@@ -32,7 +32,7 @@ public class FeatureControllerTest {
     }
 
     @Test
-    public void shouldReturnAWeatherFromACityName() {
+    public void shouldReturnAllFeatures() {
         RestAssured
                 .given()
                 .port(port)
@@ -54,6 +54,56 @@ public class FeatureControllerTest {
                 .body("[13].beginViewingDate", equalTo(1555044772083L))
                 .body("[13].endViewingDate", equalTo(1555044797082L))
                 .body("[13].missionName", equalTo("Sentinel-1"))
+        ;
+    }
+
+    @Test
+    public void shouldReturnFeatureById() {
+        RestAssured
+                .given()
+                .port(port)
+                .filter(new RequestLoggingFilter())
+                .filter(new ResponseLoggingFilter())
+                .when()
+                .get("features/aeaa71d6-c549-4620-99ce-f8cae750b8d5")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.OK.value())
+                .body("id", equalTo("aeaa71d6-c549-4620-99ce-f8cae750b8d5"))
+                .body("timestamp", equalTo(1560015145495L))
+                .body("beginViewingDate", equalTo(1560015145495L))
+                .body("endViewingDate", equalTo(1560015170493L))
+                .body("missionName", equalTo("Sentinel-1"))
+        ;
+    }
+
+    @Test
+    public void shouldReturnNotFoundIfFeatureDoesNotExist() {
+        RestAssured
+                .given()
+                .port(port)
+                .filter(new RequestLoggingFilter())
+                .filter(new ResponseLoggingFilter())
+                .when()
+                .get("features/00000000-0000-0000-0000-000000000001")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.NOT_FOUND.value())
+        ;
+    }
+
+    @Test
+    public void shouldReturnQuicklookFromFeatureById() {
+        RestAssured
+                .given()
+                .port(port)
+                .filter(new RequestLoggingFilter())
+                .when()
+                .get("features/ca81d759-0b8c-4b3f-a00a-0908a3ddd655/quicklook")
+                .then()
+                .assertThat()
+                .contentType("image/png")
+                .statusCode(HttpStatus.OK.value())
         ;
     }
 
