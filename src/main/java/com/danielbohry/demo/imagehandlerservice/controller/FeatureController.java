@@ -33,22 +33,14 @@ public class FeatureController {
 
     @GetMapping("{id}")
     public ResponseEntity<Feature> getById(@PathVariable UUID id) {
-        try {
-            Feature result = service.find(id);
-            return ResponseEntity.ok(result);
-        } catch (NotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
+        Feature result = service.find(id);
+        return ResponseEntity.ok(result);
     }
 
     @GetMapping(value = "{id}/quicklook", produces = MediaType.IMAGE_PNG_VALUE)
     public ResponseEntity<byte[]> getQuickLook(@PathVariable UUID id) {
-        try {
-            String result = service.findQuicklook(id);
-            return ResponseEntity.ok(Base64.decodeBase64(result));
-        } catch (NotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
+        String result = service.findQuicklook(id);
+        return ResponseEntity.ok(Base64.decodeBase64(result));
     }
 
 }

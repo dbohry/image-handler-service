@@ -15,6 +15,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.notNullValue;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -89,6 +90,8 @@ public class FeatureControllerTest {
                 .then()
                 .assertThat()
                 .statusCode(HttpStatus.NOT_FOUND.value())
+                .body("timestamp", notNullValue())
+                .body("message", equalTo("No resource found using id [00000000-0000-0000-0000-000000000001]"))
         ;
     }
 

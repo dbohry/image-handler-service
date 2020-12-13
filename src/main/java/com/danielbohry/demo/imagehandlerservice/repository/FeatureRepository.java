@@ -16,6 +16,7 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import static java.lang.String.format;
 import static java.util.stream.Collectors.toList;
 
 @Repository
@@ -46,14 +47,14 @@ public class FeatureRepository {
                 .filter(entity -> entity.getId().equals(id))
                 .map(PropertyEntity::fromEntity)
                 .findFirst()
-                .orElseThrow(NotFoundException::new);
+                .orElseThrow(() -> new NotFoundException(format("No resource found using id [%s]", id.toString())));
     }
 
     public String findQuicklook(UUID id) throws NotFoundException {
         PropertyEntity properties = features.stream()
                 .filter(entity -> entity.getId().equals(id))
                 .findFirst()
-                .orElseThrow(NotFoundException::new);
+                .orElseThrow(() -> new NotFoundException(format("No resource found using id [%s]", id.toString())));
 
         return properties.getQuicklook();
     }
