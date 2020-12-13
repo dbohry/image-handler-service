@@ -19,7 +19,7 @@ import java.util.UUID;
 @RequestMapping(value = "features")
 public class FeatureController {
 
-    private FeatureService service;
+    private final FeatureService service;
 
     public FeatureController(FeatureService service) {
         this.service = service;
